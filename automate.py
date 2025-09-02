@@ -10,22 +10,27 @@ import openai
 # Constants
 GITHUB_API_BASE = "https://api.github.com"
 
+
 # Load environment variables
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 GITHUB_USERNAME = os.getenv("GITHUB_USERNAME")
 
+
 if not all([GITHUB_TOKEN, OPENAI_API_KEY, GITHUB_USERNAME]):
     raise Exception("Please set GITHUB_TOKEN, OPENAI_API_KEY, and GITHUB_USERNAME environment variables.")
 
+
 # Setup OpenAI
 openai.api_key = OPENAI_API_KEY
+
 
 # Headers for GitHub API
 HEADERS = {
     "Authorization": f"token {GITHUB_TOKEN}",
     "Accept": "application/vnd.github.v3+json",
 }
+
 
 
 def list_public_repos(username: str):
@@ -45,6 +50,7 @@ def list_public_repos(username: str):
     return repos
 
 
+
 def get_readme(owner: str, repo: str) -> Optional[str]:
     """Fetch README.md content of a repo, if available."""
     url = f"{GITHUB_API_BASE}/repos/{owner}/{repo}/readme"
@@ -58,6 +64,7 @@ def get_readme(owner: str, repo: str) -> Optional[str]:
     if content and encoding == "base64":
         return base64.b64decode(content).decode("utf-8", errors="ignore")
     return None
+
 
 
 def generate_description(repo_name: str, readme_content: Optional[str]) -> str:
@@ -91,6 +98,7 @@ def generate_description(repo_name: str, readme_content: Optional[str]) -> str:
         return ""
 
 
+
 def update_repo_description(owner: str, repo: str, description: str):
     """Update the repo description using GitHub API."""
     url = f"{GITHUB_API_BASE}/repos/{owner}/{repo}"
@@ -102,6 +110,7 @@ def update_repo_description(owner: str, repo: str, description: str):
         print(f"Updated description for '{repo}' successfully.")
     else:
         print(f"Failed to update description for '{repo}': {response.status_code} {response.text}")
+
 
 
 def main():
