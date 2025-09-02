@@ -112,26 +112,26 @@ def format_repo_stats(repo: Dict) -> str:
     stats = []
     
     if repo.get("stargazers_count", 0) > 0:
-        stats.append(f"⭐ {repo['stargazers_count']} stars")
+        stats.append(f" {repo['stargazers_count']} stars")
     
     if repo.get("forks_count", 0) > 0:
-        stats.append(f"🍴 {repo['forks_count']} forks")
+        stats.append(f" {repo['forks_count']} forks")
     
     if repo.get("open_issues_count", 0) > 0:
-        stats.append(f"📝 {repo['open_issues_count']} open issues")
+        stats.append(f"{repo['open_issues_count']} open issues")
     
     return " | ".join(stats) if stats else "*No public engagement yet*"
 
 def generate_markdown_report(projects: List[Dict]) -> str:
     
-    report = f"""# 🚀 GitHub Projects Portfolio
+    report = f"""#  GitHub Projects Portfolio
 
 **Generated on:** {datetime.now().strftime("%B %d, %Y")}  
 **Total Projects with Documentation:** {len(projects)}
 
 ---
 
-## 📊 Quick Overview
+## Quick Overview
 
 | Metric | Count |
 |--------|-------|
@@ -141,7 +141,7 @@ def generate_markdown_report(projects: List[Dict]) -> str:
 
 ---
 
-## 📁 Project Details
+##  Project Details
 
 """
     
@@ -195,12 +195,12 @@ def main():
         
         readme = get_readme(GITHUB_USERNAME, repo_name)
         if readme:
-            print(f"✅ README found for {repo_name}")
+            print(f" README found for {repo_name}")
             
             languages = get_repo_languages(GITHUB_USERNAME, repo_name)
             repo['languages'] = languages
             
-            print("🤖 Generating AI summary...")
+            print("Generating AI summary...")
             ai_summary = generate_project_summary(repo_name, readme, languages)
             repo['ai_summary'] = ai_summary
             repo['readme_content'] = readme
@@ -209,22 +209,22 @@ def main():
             
             time.sleep(2)
         else:
-            print(f"❌ No README found for {repo_name} - skipping")
+            print(f"No README found for {repo_name} - skipping")
     
-    print(f"\n📝 Found {len(repos_with_readme)} repos with README files.")
+    print(f"\n Found {len(repos_with_readme)} repos with README files.")
     
     if repos_with_readme:
         repos_with_readme.sort(key=lambda x: (x.get('stargazers_count', 0), x['updated_at']), reverse=True)
         
-        print("📄 Generating markdown report...")
+        print("Generating markdown report...")
         markdown_report = generate_markdown_report(repos_with_readme)
         
         filename = f"github_projects_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(markdown_report)
         
-        print(f"✅ Report generated successfully: {filename}")
-        print(f"📊 Total documented projects: {len(repos_with_readme)}")
+        print(f"Report generated successfully: {filename}")
+        print(f"Total documented projects: {len(repos_with_readme)}")
         
         print("\n" + "="*60)
         print("QUICK SUMMARY")
@@ -234,7 +234,7 @@ def main():
         if len(repos_with_readme) > 5:
             print(f"• ... and {len(repos_with_readme) - 5} more projects")
     else:
-        print("❌ No repositories with README files found.")
+        print(" No repositories with README files found.")
 
 if __name__ == "__main__":
     main()
